@@ -827,6 +827,11 @@ namespace mfc {
 ;; 
 ;; (add-hook 'c-mode-common-hook 'jpk/c-mode-hook)
 
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
+
 ;; ======================
 ;; DONE
 ;; ======================
