@@ -28,15 +28,17 @@ function setenv() {
 
 pushpath ~/bin
 pushpath ~/local/bin
+pushpath /usr/local/Cellar/perl/5.30.3/bin/
 pushpath ~/Perl/bin
 pushpath /sbin
 pushpath /usr/local/opt/grep/libexec/gnubin # brew's grep
+pushpath .
 
 function hlp    () {
-    eval "grep -hi $* ~/mydoc/myHelp.doc"
+    eval "grep -hi $* ~/myHelp/howto ~/myHelp/whatis"
 }
 function hlpput () {
-    eval "echo $* >>  ~/mydoc/myHelp.doc"
+    eval "echo $* >>  ~/myHelp/howto"
 }
 function h ()  {
     eval "history | grep $*"
@@ -202,6 +204,14 @@ if [ $IS_ZSH ]; then
 
     autoload zmv                    # rename mass files: zmv -W '*.foo' '*.bar'
 
+
+    if type brew &>/dev/null; then
+        # use  brew zsh? try brew completion
+        FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+        autoload -Uz compinit
+        compinit
+    fi
     _complete_files () {
         compadd - $PREFIX*
     }
@@ -223,13 +233,18 @@ elif [ $IS_BASH ]; then
     complete -o bashdefault -o default -o nospace -F _git gitmf 2>/dev/null || complete -o default -o nospace -F _git gitmf
 
     alias hlpopt="man bash-builtins"
+    # function __my_prompt_command__ () {
+    #     builtin update_terminal_cwd
+    #     history 1 >> ~/.bash_history_all
+    # }
+    # PROMPT_COMMAND=__my_prompt_command__
 
     HISTFILE=~/.bash_history
-    HISTCONTROL=ignoredups:erasedups
+    HISTCONTROL=ignoredups:ignorespace:erasedups
     HISTFILESIZE=200000
     shopt -s histappend
     shopt -s histreedit
-    shopt -s cmdhist globstar
+    # shopt -s cmdhist globstar
     shopt -u huponexit
 
     shopt -s cdspell dotglob  # autocd
