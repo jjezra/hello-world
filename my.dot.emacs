@@ -708,7 +708,7 @@
                    (beginning-of-buffer)
                    (insert "# -*- cperl -*-
 
-eval 'exec /usr/bin/perl $0 $*'
+eval 'env perl $0 $*'
     if 0 ;
 
 use 5.10.0 ;
